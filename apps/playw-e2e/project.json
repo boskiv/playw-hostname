@@ -5,11 +5,11 @@
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/cypress:cypress",
+      "executor": "@mands/nx-playwright:playwright-executor",
       "options": {
-        "cypressConfig": "apps/playw-e2e/cypress.config.ts",
-        "devServerTarget": "playw:serve:development",
-        "testingType": "e2e"
+        "e2eFolder": "apps/playw-e2e",
+        "devServerTarget": "playw:serve",
+        "packageRunner": "yarn"
       },
       "configurations": {
         "production": {
@@ -17,11 +17,21 @@
         }
       }
     },
+    "ts-check": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "tsc --build --force --verbose apps/playw-e2e/tsconfig.json"
+          }
+        ]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/playw-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/playw-e2e/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },
